@@ -11,6 +11,11 @@ defineProps({
 const showingNavigationDropdown = ref(false);
 const dropdownOpen = ref(false);
 const notificationOpen = ref(false);
+const sidebarOpen = ref(false);
+
+const updateSidebarOpen = (value) => {
+    sidebarOpen.value = value;
+};
 
 const switchToTeam = (team) => {
     router.put(route('current-team.update'), {
@@ -32,7 +37,7 @@ const logout = () => {
         <Banner/>
 
         <div class="flex h-screen bg-gray-200 font-roboto">
-            <Sidebar/>
+            <Sidebar :sidebar-open="sidebarOpen" @toggle-sidebar="updateSidebarOpen"/>
             <div class="flex-1 flex flex-col overflow-hidden">
                 <header class="flex justify-between items-center py-4 px-6 bg-white border-b-4 border-indigo-600">
                     <div class="flex items-center">
