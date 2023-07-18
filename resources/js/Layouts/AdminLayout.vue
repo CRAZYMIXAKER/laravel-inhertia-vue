@@ -38,6 +38,7 @@ const logout = () => {
 
         <div class="flex h-screen bg-gray-200 font-roboto">
             <Sidebar :sidebar-open="sidebarOpen" @toggle-sidebar="updateSidebarOpen"/>
+
             <div class="flex-1 flex flex-col overflow-hidden">
                 <header class="flex justify-between items-center py-4 px-6 bg-white border-b-4 border-indigo-600">
                     <div class="flex items-center">
@@ -159,7 +160,7 @@ const logout = () => {
                 </header>
 
                 <!-- Page Content -->
-                <main>
+                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                     <slot/>
                 </main>
             </div>
