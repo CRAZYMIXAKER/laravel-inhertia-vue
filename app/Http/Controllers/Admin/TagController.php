@@ -15,6 +15,7 @@ class TagController extends Controller
     public function index()
     {
         $perPage = Request::input('perPage') ?: 5;
+
         return Inertia::render('Tags/Index', [
             'tags' => Tag::query()
                 ->when(Request::input('search'), function ($query, $search) {
