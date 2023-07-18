@@ -44,4 +44,36 @@ class TagController extends Controller
         );
     }
 
+    public function edit(Tag $tag)
+    {
+        return Inertia::render('Tags/Edit', [
+            'tag' => $tag,
+        ]);
+    }
+
+    public function update(Tag $tag)
+    {
+        $tag->update(
+            [
+                'tag_name' => Request::input('tagName'),
+                'slug' => Str::slug(Request::input('tagName')),
+            ]
+        );
+
+        return Redirect::route('admin.tags.index')->with(
+            'flash.banner',
+            'Tag Updated'
+        );
+    }
+
+    public function destroy(Tag $tag)
+    {
+        $tag->delete();
+
+        return Redirect::route('admin.tags.index')->with(
+            'flash.banner',
+            'Tag Deleted'
+        )->with('flash.bannerStyle', 'danger');
+    }
+
 }

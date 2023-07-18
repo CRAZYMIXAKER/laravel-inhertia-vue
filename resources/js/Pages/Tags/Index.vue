@@ -44,9 +44,9 @@
                                         v-model="perPage"
                                         class="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
                                         @change="getTags">
-                                        <option value="5" :selected="perPage === 5">5 Per Page</option>
-                                        <option value="10" :selected="perPage === 10">10 Per Page</option>
-                                        <option value="15" :selected="perPage === 15">15 Per Page</option>
+                                        <option :selected="perPage === 5" value="5">5 Per Page</option>
+                                        <option :selected="perPage === 10" value="10">10 Per Page</option>
+                                        <option :selected="perPage === 15" value="15">15 Per Page</option>
                                     </select>
                                 </div>
                             </div>
@@ -68,13 +68,19 @@
                                     <td class="px-4 py-3 text-ms font-semibold border">{{ tag.slug }}</td>
 
                                     <td class="flex justify-around px-4 py-3 text-sm border">
-                                        <button
+                                        <Link
+                                            :href="route('admin.tags.edit', tag.id)"
                                             class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
                                             Edit
-                                        </button>
-                                        <button class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                                        </Link>
+                                        <Link
+                                            :href="route('admin.tags.destroy', tag.id)"
+                                            as="button"
+                                            class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
+                                            method="delete"
+                                            type="button">
                                             Delete
-                                        </button>
+                                        </Link>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -103,7 +109,7 @@ const props = defineProps({
 });
 
 const search = ref(props.filters.search);
-const perPage = ref(props.filters.perPage);
+const perPage = ref(props.filters.perPage ?? 5);
 
 watch(search, (value) => {
     router.get(
