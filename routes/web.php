@@ -40,9 +40,9 @@ Route::middleware(['auth:sanctum', 'verified', 'role:admin'])
         })->name('index');
         Route::resource('/movies', MovieController::class);
         Route::resource('/tv-shows', TvShowController::class);
-        Route::resource('/tv-shows/{tv-show}/seasons', SeasonController::class);
+        Route::resource('/tv-shows/{tv_show}/seasons', SeasonController::class);
         Route::resource(
-            '/tv-shows/{tv-show}/seasons/{season}/episodes',
+            '/tv-shows/{tv_show}/seasons/{season}/episodes',
             EpisodeController::class
         );
         Route::resource('/genres', GenreController::class);
