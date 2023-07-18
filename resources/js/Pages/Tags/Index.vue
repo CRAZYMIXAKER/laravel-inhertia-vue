@@ -20,7 +20,7 @@
                     <div class="w-full mb-8 overflow-hidden bg-white rounded-lg shadow-lg">
                         <div class="p-2 m-2">
                             <div class="flex justify-between">
-                                <div class="flex-1">
+                                <div class="flex-1 mr-3">
                                     <div class="relative">
                                         <div class="absolute flex items-center ml-2 h-full">
                                             <svg class="w-4 h-4 fill-current text-primary-gray-dark" fill="none"
@@ -33,18 +33,20 @@
                                         </div>
 
                                         <input
+                                            v-model="search"
                                             class="px-8 py-3 w-full md:w-2/6 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
-                                            placeholder="Search by title" type="text"
-                                            wire:model="search"/>
+                                            placeholder="Search by title"
+                                            type="text"/>
                                     </div>
                                 </div>
                                 <div class="flex">
                                     <select
+                                        v-model="perPage"
                                         class="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
-                                        wire:model="perPage">
-                                        <option value="5">5 Per Page</option>
-                                        <option value="10">10 Per Page</option>
-                                        <option value="15">15 Per Page</option>
+                                        @change="getTags">
+                                        <option value="5" :selected="perPage === 5">5 Per Page</option>
+                                        <option value="10" :selected="perPage === 10">10 Per Page</option>
+                                        <option value="15" :selected="perPage === 15">15 Per Page</option>
                                     </select>
                                 </div>
                             </div>
@@ -79,7 +81,7 @@
 
                             </table>
                             <div class="m-2 p-2">
-<Pagination :links="tags.links"/>
+                                <Pagination :links="tags.links"/>
                             </div>
                         </div>
                     </div>
@@ -91,14 +93,35 @@
 
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import Pagination from '@/Components/Pagination.vue';
+import { defineProps, ref, watch } from 'vue';
 
 const props = defineProps({
     tags: Object,
+    filters: Object,
 });
+
+const search = ref(props.filters.search);
+const perPage = ref(props.filters.perPage);
+
+watch(search, (value) => {
+    router.get(
+        '/admin/tags',
+        { search: value, perPage: perPage.value },
+        {
+            preserveState: true,
+            replace: true,
+        });
+});
+
+function getTags() {
+    router.get(
+        '/admin/tags',
+        { perPage: perPage.value, search: search.value },
+        {
+            preserveState: true,
+            replace: true,
+        });
+}
 </script>
-
-<style lang="scss" scoped>
-
-</style>
