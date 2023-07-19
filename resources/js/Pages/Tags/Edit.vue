@@ -45,7 +45,6 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Link, useForm } from '@inertiajs/vue3';
-import { defineProps } from 'vue';
 
 const props = defineProps({
     tag: Object,

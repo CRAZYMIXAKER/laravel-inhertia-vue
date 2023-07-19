@@ -28,6 +28,11 @@ class CastController extends Controller
         ]);
     }
 
+    public function edit(Cast $cast)
+    {
+        return Inertia::render('Casts/Edit', ['cast' => $cast]);
+    }
+
     public function store()
     {
         $cast = Cast::where('tmdb_id', Request::input('castTMDBId'))->first();
@@ -46,7 +51,7 @@ class CastController extends Controller
                 'services.tmdb.secret'
             ).'&language=en-US'
         );
-        
+
         if ($tmdb_cast->successful()) {
             Cast::create([
                 'tmdb_id' => $tmdb_cast['id'],
@@ -65,6 +70,28 @@ class CastController extends Controller
                 'Api error'
             );
         }
+    }
+
+    public function update(Cast $cast)
+    {
+        $validated = Request::validate([
+            'name' => 'required',
+            'poster_path' => 'required',
+        ]);
+
+        $cast->update($validated);
+
+        return Redirect::route('admin.casts.index')->with(
+            'flash.banner',
+            'Cast updated'
+        );
+    }
+
+    public function destroy(Cast $cast)
+    {
+        $cast->delete();
+        
+        return Redirect::back()->with('flash.banner', 'Cast Deleted');
     }
 
 }
