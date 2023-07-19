@@ -101,7 +101,7 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
 import Pagination from '@/Components/Pagination.vue';
-import { defineProps, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
     tags: Object,

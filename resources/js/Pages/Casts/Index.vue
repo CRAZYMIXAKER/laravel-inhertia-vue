@@ -108,7 +108,7 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { router } from '@inertiajs/vue3';
 import Pagination from '@/Components/Pagination.vue';
-import { defineProps, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import Table from '@/Components/Table.vue';
 import TableHead from '@/Components/TableHead.vue';
 import TableRow from '@/Components/TableRow.vue';

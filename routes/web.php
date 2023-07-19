@@ -39,6 +39,10 @@ Route::middleware(['auth:sanctum', 'verified', 'role:admin'])
             return Inertia::render('Admin/Index');
         })->name('index');
         Route::resource('/movies', MovieController::class);
+        Route::get(
+            '/movies/{movies}/attach',
+            [MovieAttachController::class, 'index']
+        )->name('movies.attach');
         Route::resource('/tv-shows', TvShowController::class);
         Route::resource('/tv-shows/{tv_show}/seasons', SeasonController::class);
         Route::resource(
