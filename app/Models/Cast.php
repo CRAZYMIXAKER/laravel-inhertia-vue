@@ -13,7 +13,7 @@ class Cast extends Model
 
     protected $fillable = ['tmdb_id', 'name', 'slug', 'poster_path'];
 
-    public function setNameAttribute($value)
+    protected function setNameAttribute($value)
     {
         $this->attributes['name'] = $value;
         $this->attributes['slug'] = Str::slug($value);
