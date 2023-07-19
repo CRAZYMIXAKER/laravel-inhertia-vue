@@ -83,7 +83,10 @@
                                             <ButtonLink :link="route('admin.casts.edit', cast.id)">Edit</ButtonLink>
                                             <ButtonLink
                                                 :link="route('admin.casts.destroy', cast.id)"
-                                                class="bg-red-500 hover:bg-red-7">
+                                                as="button"
+                                                class="bg-red-500 hover:bg-red-700"
+                                                method="delete"
+                                                type="button">
                                                 Delete
                                             </ButtonLink>
                                         </div>
