@@ -52,6 +52,14 @@ Route::middleware(['auth:sanctum', 'verified', 'role:admin'])
             '/trailer-url/{trailer_url}',
             [MovieAttachController::class, 'destroyTrailer']
         )->name('trailers.destroy');
+        Route::post(
+            '/movies/{movies}/add-casts',
+            [MovieAttachController::class, 'addCast']
+        )->name('movies.add.casts');
+        Route::post(
+            '/movies/{movies}/add-tags',
+            [MovieAttachController::class, 'addTag']
+        )->name('movies.add.tags');
         Route::resource('/tv-shows', TvShowController::class);
         Route::resource('/tv-shows/{tv_show}/seasons', SeasonController::class);
         Route::resource(

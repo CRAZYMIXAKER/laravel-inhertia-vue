@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
 class Cast extends Model
@@ -19,4 +20,8 @@ class Cast extends Model
         $this->attributes['slug'] = Str::slug($value);
     }
 
+    public function movies(): BelongsToMany
+    {
+        return $this->belongsToMany(Movie::class, 'cast_movie')->latest();
+    }
 }
