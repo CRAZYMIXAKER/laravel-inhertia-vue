@@ -66,7 +66,7 @@
                                         </div>
 
                                         <input
-                                            v-model="search"
+                                            v-model="movieFilters.search"
                                             class="px-8 py-3 w-full md:w-2/6 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
                                             placeholder="Search by title"
                                             type="text"/>
@@ -74,12 +74,12 @@
                                 </div>
                                 <div class="flex">
                                     <select
-                                        v-model="perPage"
+                                        v-model="movieFilters.perPage"
                                         class="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
-                                        @change="getMovies">
-                                        <option :selected="perPage === 5" value="5">5 Per Page</option>
-                                        <option :selected="perPage === 10" value="10">10 Per Page</option>
-                                        <option :selected="perPage === 15" value="15">15 Per Page</option>
+                                        @change="movieFilters.perPage === $event.target.value">
+                                        <option :selected="movieFilters.perPage === 5" value="5">5 Per Page</option>
+                                        <option :selected="movieFilters.perPage === 10" value="10">10 Per Page</option>
+                                        <option :selected="movieFilters.perPage === 15" value="15">15 Per Page</option>
                                     </select>
                                 </div>
                             </div>
@@ -147,42 +147,39 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { router } from '@inertiajs/vue3';
 import Pagination from '@/Components/Pagination.vue';
-import { ref, watch } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import Table from '@/Components/Table.vue';
 import TableHead from '@/Components/TableHead.vue';
 import TableRow from '@/Components/TableRow.vue';
 import TableData from '@/Components/TableData.vue';
 import ButtonLink from '@/Components/ButtonLink.vue';
+import { pickBy, throttle } from 'lodash';
 
 const props = defineProps({
     movies: Object,
     filters: Object,
 });
 
-const search = ref(props.filters.search);
-const perPage = ref(props.filters.perPage ?? 5);
+const movieFilters = reactive({
+    search: props.filters.search,
+    perPage: props.filters.perPage ?? 5,
+});
 const showSpinner = ref(false);
 const movieTMDBId = ref('');
 
-watch(search, (value) => {
-    router.get(
-        '/admin/movies',
-        { search: value, perPage: perPage.value },
-        {
+watch(movieFilters, throttle(() => {
+        let query = pickBy(movieFilters);
+        let queryRoute = route('admin.movies.index', Object.keys(query).length ? query : {
+            remember: 'forget',
+        });
+        router.get(queryRoute, {}, {
             preserveState: true,
             replace: true,
         });
-});
-
-function getMovies() {
-    router.get(
-        '/admin/movies',
-        { perPage: perPage.value, search: search.value },
-        {
-            preserveState: true,
-            replace: true,
-        });
-}
+    }, 500),
+    {
+        deep: true,
+    });
 
 function generateMovie() {
     router.post('/admin/movies', {
