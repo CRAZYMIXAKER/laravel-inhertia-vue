@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CastController;
 use App\Http\Controllers\Admin\EpisodeController;
 use App\Http\Controllers\Admin\GenreController;
+use App\Http\Controllers\Admin\MovieAttachController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\SeasonController;
 use App\Http\Controllers\Admin\TagController;
@@ -43,6 +44,14 @@ Route::middleware(['auth:sanctum', 'verified', 'role:admin'])
             '/movies/{movies}/attach',
             [MovieAttachController::class, 'index']
         )->name('movies.attach');
+        Route::post(
+            '/movies/{movies}/add-trailer',
+            [MovieAttachController::class, 'addTrailer']
+        )->name('movies.add.trailer');
+        Route::delete(
+            '/trailer-url/{trailer_url}',
+            [MovieAttachController::class, 'destroyTrailer']
+        )->name('trailers.destroy');
         Route::resource('/tv-shows', TvShowController::class);
         Route::resource('/tv-shows/{tv_show}/seasons', SeasonController::class);
         Route::resource(

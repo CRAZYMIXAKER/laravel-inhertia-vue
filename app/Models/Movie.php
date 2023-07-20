@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Str;
 
 class Movie extends Model
@@ -36,6 +38,21 @@ class Movie extends Model
     public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class, 'genre_movie');
+    }
+
+    public function trailers(): MorphMany
+    {
+        return $this->morphMany(TrailerUrl::class, 'trailerable');
+    }
+
+    public function tags(): MorphToMany
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function casts(): BelongsToMany
+    {
+        return $this->belongsToMany(Cast::class, 'cast_movie');
     }
 
 }
